@@ -17,25 +17,7 @@ const gameBoard = (() => {
     });
   };
 
-  const setMarker = (marker) => {
-    const boardItems = document.querySelectorAll(".board-item");
-    boardItems.forEach((item) => {
-      item.addEventListener("click", (e) => {
-        boardPosition = e.target.getAttribute("data-position");
-
-        console.log(boardPosition);
-        if (board[boardPosition] !== "") {
-          window.alert("You can not chose that posiotion. Already marked!");
-          return;
-        }
-        board[boardPosition] = marker;
-        console.log(gameBoard.board);
-        e.target.textContent = marker;
-      });
-    });
-  };
-
-  return { board, renderBoard, setMarker };
+  return { board, renderBoard };
 })();
 
 const Player = (name, marker) => {
@@ -44,7 +26,7 @@ const Player = (name, marker) => {
 
 const game = (() => {
   const player1 = Player("player1", "X");
-  const player2 = Player("player2", "0");
+  const player2 = Player("player2", "O");
   let activePlayer;
   let winner;
 
@@ -62,41 +44,74 @@ const game = (() => {
     }
   };
 
-  const checkWinner = () => {
-    board = gameBoard.board;
+  const checkWinner = (marker) => {
+    // board = gameBoard.board;
 
-    winningCombinations = [
-      [board[0], board[1], board[2]],
-      [board[3], board[4], board[5]],
-      [board[6], board[7], board[8]],
-      [board[0], board[3], board[6]],
-      [board[1], board[4], board[7]],
-      [board[2], board[5], board[8]],
-      [board[0], board[4], board[8]],
-      [board[2], board[4], board[6]],
+    // winningCombinations = [
+    //   [board[0], board[1], board[2]],
+    //   [board[3], board[4], board[5]],
+    //   [board[6], board[7], board[8]],
+    //   [board[0], board[3], board[6]],
+    //   [board[1], board[4], board[7]],
+    //   [board[2], board[5], board[8]],
+    //   [board[0], board[4], board[8]],
+    //   [board[2], board[4], board[6]],
+    // ];
+
+    // console.log(winningCombinations);
+
+    // console.log(winningCombinations.some((comb) => comb === ["X", "X", "X"]));
+
+    // if (winningCombinations.includes(["X", "X", "X"])) {
+    //   winner = player1;
+    // } else if (winningCombinations.includes(["O", "O", "O"])) {
+    //   winner = player2;
+    // }
+    const horizontal = [0, 3, 6].map((i) => [i, i + 1, i + 2]);
+    const vertical = [0, 1, 2].map((i) => [i, i + 3, i + 6]);
+    const diagonal = [
+      [0, 4, 8],
+      [2, 4, 6],
     ];
 
-    if (winningCombinations.includes(["X", "X", "X"])) {
-      winner = player1;
-    } else if (winningCombinations.includes(["0", "0", "0"])) {
-      winner = player2;
+    const allWins = [...horizontal, ...vertical, ...diagonal];
+    const board = gameBoard.board;
+
+    const res = allWins.some((winCon) => {
+      return (
+        board[winCon[0]] == marker &&
+        board[winCon[1]] == marker &&
+        board[winCon[2]] == marker
+      );
+    });
+
+    return res;
+  };
+
+  const playRound = (e) => {
+    const boardPosition = e.target.getAttribute("data-position");
+
+    gameBoard.board[boardPosition] = activePlayer.marker;
+    e.target.textContent = activePlayer.marker;
+
+    const isWinner = checkWinner(activePlayer.marker);
+
+    if (isWinner) {
+      console.log(`${activePlayer.name} wins the game!`);
+      return;
+    } else {
+      setActivePlayer();
     }
   };
 
   const playGame = () => {
-    gameBoard.setMarker(activePlayer.marker);
-    checkWinner();
+    const boardItems = document.querySelectorAll(".board-item");
 
-    if (winner === player1) {
-      console.log(`${player1.name} has won the game!`);
-      return;
-    } else if (winner === player2) {
-      console.log(`${player2} has won the game!`);
-      return;
-    } else if (!gameBoard.board.includes("")) {
-      console.log(`The game is a draw!`);
-      return;
-    }
+    boardItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        playRound(e);
+      });
+    });
   };
 
   return { start, activePlayer, setActivePlayer, playGame };
