@@ -20,6 +20,10 @@ body {
   text-align: center;
 }
 
+.sidebar h1 {
+  color: #aeecef;
+}
+
 .menu {
   margin-top: 20px;
   display: flex;
@@ -38,4 +42,30 @@ body {
 
 .menu-btn:hover {
   background: #119da4;
+}
+
+/* MAIN */
+
+.main {
+  width: 100%;
+}
+
+/* Gameboard */
+.board {
+  margin: 20px auto;
+  width: 150px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--primary-color);
+}
+
+.board-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  cursor: pointer;
 }
