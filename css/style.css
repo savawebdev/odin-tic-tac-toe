@@ -79,3 +79,20 @@ body {
   justify-content: center;
   gap: 50px;
 }
+
+.player-card {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  color: var(--primary-color);
+}
+
+.player-score {
+  font-size: 1.3rem;
+}
+
+.active {
+  background: var(--primary-color);
+  color: #fff;
+}

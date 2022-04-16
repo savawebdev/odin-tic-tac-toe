@@ -21,20 +21,25 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
-  const players = (player1, player2) => {
-    const mainSection = document.querySelector(".main");
+  const mainSection = document.querySelector(".main");
 
+  const playerCards = (player1, player2) => {
+    // Creates the players section
     const playersSection = document.createElement("div");
     playersSection.classList.add("players");
     mainSection.appendChild(playersSection);
 
+    // Creates the player cards
     const playerOne = document.createElement("div");
     const playerTwo = document.createElement("div");
     playerOne.classList.add("player-card");
     playerTwo.classList.add("player-card");
+    playerOne.setAttribute("id", "player-one");
+    playerTwo.setAttribute("id", "player-two");
     playersSection.appendChild(playerOne);
     playersSection.appendChild(playerTwo);
 
+    // Creates the card headers for player names
     const playerOneName = document.createElement("h2");
     playerOneName.textContent = `${player1.name} (${player1.marker})`;
     playerOne.appendChild(playerOneName);
@@ -42,9 +47,35 @@ const displayController = (() => {
     const playerTwoName = document.createElement("h2");
     playerTwoName.textContent = `${player2.name} (${player2.marker})`;
     playerTwo.appendChild(playerTwoName);
+
+    // Creates paragraphs to show the player score
+    const playerOneScore = document.createElement("p");
+    playerOneScore.textContent = 0;
+    playerOneScore.setAttribute("id", "player-one-score");
+    playerOneScore.classList.add("player-score");
+    playerOne.appendChild(playerOneScore);
+
+    const playerTwoScore = document.createElement("p");
+    playerTwoScore.textContent = 0;
+    playerTwoScore.setAttribute("id", "player-two-score");
+    playerTwoScore.classList.add("player-score");
+    playerTwo.appendChild(playerTwoScore);
   };
 
-  return { players };
+  const setActiveCard = (player1, player2) => {
+    const playerOne = document.getElementById("player-one");
+    const playerTwo = document.getElementById("player-two");
+
+    if (game.getActivePlayer() === player1) {
+      playerOne.classList.add("active");
+      playerTwo.classList.remove("active");
+    } else {
+      playerOne.classList.remove("active");
+      playerTwo.classList.add("active");
+    }
+  };
+
+  return { playerCards, setActiveCard };
 })();
 
 const Player = (name, marker) => {
@@ -55,11 +86,10 @@ const game = (() => {
   const player1 = Player("player1", "X");
   const player2 = Player("player2", "O");
   let activePlayer;
-  let winner;
 
   const start = () => {
     gameBoard.renderBoard();
-    displayController.players(player1, player2);
+    displayController.playerCards(player1, player2);
     setActivePlayer();
     playGame();
   };
@@ -70,6 +100,10 @@ const game = (() => {
     } else {
       activePlayer = player1;
     }
+  };
+
+  const getActivePlayer = () => {
+    return activePlayer;
   };
 
   const checkWinner = (marker) => {
@@ -124,11 +158,12 @@ const game = (() => {
     boardItems.forEach((item) => {
       item.addEventListener("click", (e) => {
         playRound(e);
+        displayController.setActiveCard(player1, player2);
       });
     });
   };
 
-  return { start, activePlayer, setActivePlayer, playGame };
+  return { start, getActivePlayer, setActivePlayer, playGame };
 })();
 
 game.start();
