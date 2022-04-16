@@ -1,3 +1,4 @@
+// GAME BOARD OBJECT
 const gameBoard = (() => {
   const board = new Array(9).fill("");
 
@@ -31,6 +32,7 @@ const gameBoard = (() => {
   return { board, renderBoard, resetBoard };
 })();
 
+// DISPLAY CONTROLLER OBJECT
 const displayController = (() => {
   const mainSection = document.querySelector(".main");
 
@@ -97,11 +99,14 @@ const displayController = (() => {
   return { playerCards, updateScores, setActiveCard };
 })();
 
+// PLAYER OBJECT
 const Player = (name, marker) => {
   const score = 0;
+
   return { name, marker, score };
 };
 
+// GAME OBJECT
 const game = (() => {
   const player1 = Player("player1", "X");
   const player2 = Player("player2", "O");
@@ -207,3 +212,16 @@ const game = (() => {
 })();
 
 game.start();
+
+const resetBoardBtn = document.getElementById("reset-board");
+const resetScoreBtn = document.getElementById("reset-score");
+
+resetBoardBtn.addEventListener("click", () => {
+  gameBoard.resetBoard();
+});
+
+resetScoreBtn.addEventListener("click", () => {
+  game.player1.score = 0;
+  game.player2.score = 0;
+  displayController.updateScores();
+});
