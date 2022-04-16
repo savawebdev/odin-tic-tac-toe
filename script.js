@@ -17,7 +17,12 @@ const gameBoard = (() => {
     });
   };
 
-  return { board, renderBoard };
+  const resetBoard = () => {
+    const board = new Array(9).fill("");
+    renderBoard();
+  };
+
+  return { board, renderBoard, resetBoard };
 })();
 
 const displayController = (() => {
@@ -50,16 +55,24 @@ const displayController = (() => {
 
     // Creates paragraphs to show the player score
     const playerOneScore = document.createElement("p");
-    playerOneScore.textContent = 0;
+    playerOneScore.textContent = game.player1.score;
     playerOneScore.setAttribute("id", "player-one-score");
     playerOneScore.classList.add("player-score");
     playerOne.appendChild(playerOneScore);
 
     const playerTwoScore = document.createElement("p");
-    playerTwoScore.textContent = 0;
+    playerTwoScore.textContent = game.player2.score;
     playerTwoScore.setAttribute("id", "player-two-score");
     playerTwoScore.classList.add("player-score");
     playerTwo.appendChild(playerTwoScore);
+  };
+
+  const updateScores = () => {
+    const playerOneScore = document.getElementById("player-one-score");
+    const playerTwoScore = document.getElementById("player-two-score");
+
+    playerOneScore.textContent = game.player1.score;
+    playerTwoScore.textContent = game.player2.score;
   };
 
   const setActiveCard = (player1, player2) => {
@@ -75,11 +88,12 @@ const displayController = (() => {
     }
   };
 
-  return { playerCards, setActiveCard };
+  return { playerCards, updateScores, setActiveCard };
 })();
 
 const Player = (name, marker) => {
-  return { name, marker };
+  const score = 0;
+  return { name, marker, score };
 };
 
 const game = (() => {
@@ -143,6 +157,7 @@ const game = (() => {
 
     if (isWinner) {
       console.log(`${activePlayer.name} wins the game!`);
+      updateScore();
       return;
     } else if (!gameBoard.board.includes("")) {
       console.log(`The game is a draw!`);
@@ -150,6 +165,16 @@ const game = (() => {
     } else {
       setActivePlayer();
     }
+  };
+
+  const updateScore = () => {
+    if (activePlayer === player1) {
+      player1.score++;
+    } else {
+      player2.score++;
+    }
+
+    displayController.updateScores();
   };
 
   const playGame = () => {
@@ -163,7 +188,14 @@ const game = (() => {
     });
   };
 
-  return { start, getActivePlayer, setActivePlayer, playGame };
+  return {
+    player1,
+    player2,
+    start,
+    getActivePlayer,
+    setActivePlayer,
+    playGame,
+  };
 })();
 
 game.start();
