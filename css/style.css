@@ -1,0 +1,41 @@
+:root {
+  --primary-color: #3066be;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  background: var(--primary-color);
+  text-align: center;
+}
+
+.menu {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-btn {
+  padding-block: 3px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #aeecef;
+  cursor: pointer;
+}
+
+.menu-btn:hover {
+  background: #119da4;
+}
