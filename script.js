@@ -45,28 +45,6 @@ const game = (() => {
   };
 
   const checkWinner = (marker) => {
-    // board = gameBoard.board;
-
-    // winningCombinations = [
-    //   [board[0], board[1], board[2]],
-    //   [board[3], board[4], board[5]],
-    //   [board[6], board[7], board[8]],
-    //   [board[0], board[3], board[6]],
-    //   [board[1], board[4], board[7]],
-    //   [board[2], board[5], board[8]],
-    //   [board[0], board[4], board[8]],
-    //   [board[2], board[4], board[6]],
-    // ];
-
-    // console.log(winningCombinations);
-
-    // console.log(winningCombinations.some((comb) => comb === ["X", "X", "X"]));
-
-    // if (winningCombinations.includes(["X", "X", "X"])) {
-    //   winner = player1;
-    // } else if (winningCombinations.includes(["O", "O", "O"])) {
-    //   winner = player2;
-    // }
     const horizontal = [0, 3, 6].map((i) => [i, i + 1, i + 2]);
     const vertical = [0, 1, 2].map((i) => [i, i + 3, i + 6]);
     const diagonal = [
@@ -90,6 +68,11 @@ const game = (() => {
 
   const playRound = (e) => {
     const boardPosition = e.target.getAttribute("data-position");
+
+    if (gameBoard.board[boardPosition] !== "") {
+      window.alert("Position already filled! Choose another one!");
+      return;
+    }
 
     gameBoard.board[boardPosition] = activePlayer.marker;
     e.target.textContent = activePlayer.marker;
