@@ -96,7 +96,11 @@ const displayController = (() => {
     }
   };
 
-  return { playerCards, updateScores, setActiveCard };
+  return {
+    playerCards,
+    updateScores,
+    setActiveCard,
+  };
 })();
 
 // PLAYER OBJECT
@@ -116,6 +120,7 @@ const game = (() => {
     gameBoard.renderBoard();
     displayController.playerCards(player1, player2);
     setActivePlayer();
+    displayController.setActiveCard(player1, player2);
     playGame();
   };
 
@@ -167,12 +172,12 @@ const game = (() => {
     const isWinner = checkWinner(activePlayer.marker);
 
     if (isWinner) {
-      console.log(`${activePlayer.name} wins the game!`);
+      window.alert(`${activePlayer.name} wins this round!`);
       updateScore();
       gameBoard.resetBoard();
       return;
     } else if (!gameBoard.board.includes("")) {
-      console.log(`The game is a draw!`);
+      window.alert(`The game is a draw!`);
       gameBoard.resetBoard();
       return;
     } else {
