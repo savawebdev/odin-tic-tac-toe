@@ -18,8 +18,14 @@ const gameBoard = (() => {
   };
 
   const resetBoard = () => {
-    const board = new Array(9).fill("");
-    renderBoard();
+    for (let i = 0; i < board.length; i++) {
+      board[i] = "";
+    }
+
+    const boardItems = document.querySelectorAll(".board-item");
+    boardItems.forEach((item) => {
+      item.textContent = "";
+    });
   };
 
   return { board, renderBoard, resetBoard };
@@ -158,9 +164,11 @@ const game = (() => {
     if (isWinner) {
       console.log(`${activePlayer.name} wins the game!`);
       updateScore();
+      gameBoard.resetBoard();
       return;
     } else if (!gameBoard.board.includes("")) {
       console.log(`The game is a draw!`);
+      gameBoard.resetBoard();
       return;
     } else {
       setActivePlayer();
