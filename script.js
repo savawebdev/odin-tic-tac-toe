@@ -82,6 +82,9 @@ const game = (() => {
     if (isWinner) {
       console.log(`${activePlayer.name} wins the game!`);
       return;
+    } else if (!gameBoard.board.includes("")) {
+      console.log(`The game is a draw!`);
+      return;
     } else {
       setActivePlayer();
     }
