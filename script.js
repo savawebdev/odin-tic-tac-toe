@@ -2,7 +2,7 @@ const gameBoard = (() => {
   const board = new Array(9).fill("");
 
   const renderBoard = () => {
-    const mainSection = document.querySelector("main");
+    const mainSection = document.querySelector(".main");
 
     const boardSection = document.createElement("div");
     boardSection.classList.add("board");
@@ -20,6 +20,33 @@ const gameBoard = (() => {
   return { board, renderBoard };
 })();
 
+const displayController = (() => {
+  const players = (player1, player2) => {
+    const mainSection = document.querySelector(".main");
+
+    const playersSection = document.createElement("div");
+    playersSection.classList.add("players");
+    mainSection.appendChild(playersSection);
+
+    const playerOne = document.createElement("div");
+    const playerTwo = document.createElement("div");
+    playerOne.classList.add("player-card");
+    playerTwo.classList.add("player-card");
+    playersSection.appendChild(playerOne);
+    playersSection.appendChild(playerTwo);
+
+    const playerOneName = document.createElement("h2");
+    playerOneName.textContent = `${player1.name} (${player1.marker})`;
+    playerOne.appendChild(playerOneName);
+
+    const playerTwoName = document.createElement("h2");
+    playerTwoName.textContent = `${player2.name} (${player2.marker})`;
+    playerTwo.appendChild(playerTwoName);
+  };
+
+  return { players };
+})();
+
 const Player = (name, marker) => {
   return { name, marker };
 };
@@ -32,6 +59,7 @@ const game = (() => {
 
   const start = () => {
     gameBoard.renderBoard();
+    displayController.players(player1, player2);
     setActivePlayer();
     playGame();
   };
